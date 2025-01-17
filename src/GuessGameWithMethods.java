@@ -4,50 +4,46 @@ import java.util.Scanner;
 
 class GuessGameWithMethods {
 
-    private final int MAX_NUMBER = 10;
-    private final int MIN_NUMBER = 0;
+    private final static int MAX_NUMBER = 10;
+    private final static int MIN_NUMBER = 0;
     private int amountOfAttempts = 3;
     private boolean gameIsOn;
-    private Scanner scanner;
+    private final Scanner scanner = new Scanner(System.in);
 
     void playTheGame() {
-        scanner = new Scanner(System.in);
         startTheGame();
 
         int randomNumber = generateAndGetNumber();
         do {
             int userNumber = getUserNumber();
-            analiseNumbers(randomNumber, userNumber);
+            analyseNumbers(randomNumber, userNumber);
         } while (amountOfAttempts > 0 && gameIsOn);
+
         ifStartAgain();
     }
 
     private void startTheGame() {
         gameIsOn = true;
         amountOfAttempts = 3;
-        greeting();
+        System.out.printf("Привет, давай сыграем  в игру! Я загадал число от %d до %d, и у тебя есть %d попыток угадать его!\n", MIN_NUMBER, MAX_NUMBER, amountOfAttempts);
+
     }
 
-    private void analiseNumbers(int randomNumber, int userNumber) {
+    private void analyseNumbers(int randomNumber, int userNumber) {
+        amountOfAttempts--;
         if (randomNumber > userNumber) {
             System.out.println("Загаданное число больше");
-            amountOfAttempts--;
         } else if (randomNumber < userNumber) {
             System.out.println("Загаданное число меньше");
-            amountOfAttempts--;
         } else {
             System.out.println("Победа!!!");
             gameIsOn = false;
         }
     }
 
-    private void greeting() {
-        System.out.printf("Привет, давай сыграем  в игру! Я загадал число от %d до %d, и у тебя есть %d попыток угадать его!\n", MIN_NUMBER, MAX_NUMBER, amountOfAttempts);
-    }
-
     //ввод от пользователя делаем безопасным!
     private int getUserNumber() {
-        System.out.printf("Введите число, у тебя еще %d попыток:\n", amountOfAttempts);
+        System.out.printf("Введи число, у тебя еще %d попыток:\n", amountOfAttempts);
         while (!scanner.hasNextInt()) {
             System.out.println("Упс, что-то не то, попробуйте ещё раз");
             scanner.next();// Очищаем буфер ввода
